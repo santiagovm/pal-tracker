@@ -5,5 +5,5 @@ applications:
     route:
       - route: pal-tracker-santiago-vasquez.apps.pcfone.io
     env:
-      WELCOME_MESSAGE: Hello from the review environent
+      WELCOME_MESSAGE: Hello from the review environment
       JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 13.+ } }'
