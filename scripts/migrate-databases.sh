@@ -25,6 +25,7 @@ function main() {
 
     test -n "$db_host" || exit 1
 
+    echo " >>> credentials: $credentials"
     echo "Opening ssh tunnel to $db_host:$db_port ..."
 
     cf ssh -N -L 63306:$db_host:$db_port $app_name &
