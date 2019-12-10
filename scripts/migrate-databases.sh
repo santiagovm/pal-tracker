@@ -25,26 +25,28 @@ function main() {
 
     test -n "$db_host" || exit 1
 
-    echo " >>> credentials: $credentials"
-    echo " >>> app_name: $app_name"
-    echo "Opening ssh tunnel to $db_host:$db_port ..."
+#    echo " >>> credentials: $credentials"
+#    echo " >>> app_name: $app_name"
+#    echo "Opening ssh tunnel to $db_host:$db_port ..."
 
-    cf ssh -N -L 63306:$db_host:$db_port $app_name &
-    cf_ssh_pid=$!
+#    cf ssh -N -L 63306:$db_host:$db_port $app_name &
+#    cf_ssh_pid=$!
 
-    echo "Waiting for tunnel ..."
+#    echo "Waiting for tunnel ..."
 
-    wait_for_tunnel
+#    wait_for_tunnel
 
-    echo "Running migration ..."
+#    echo "Running migration ..."
 
-    flyway-*/flyway -url="jdbc:mysql://127.0.0.1:63306/$db_name" \
-        -locations=filesystem:"$script_dir"/databases/tracker \
-        -user="$db_username" \
-        -password="$db_password" \
-        migrate
+#    flyway-*/flyway -url="jdbc:mysql://127.0.0.1:63306/$db_name" \
+#        -locations=filesystem:"$script_dir"/databases/tracker \
+#        -user="$db_username" \
+#        -password="$db_password" \
+#        migrate
+#
+#    echo "Migration complete"
 
-    echo "Migration complete"
+    echo "migration skipped because ssh not working from Travis CI, it was done running migration from workstation"
 
 }
 
