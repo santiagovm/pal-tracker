@@ -61,7 +61,7 @@ function close_tunnel_at_exit() {
     kill -KILL $cf_ssh_pid
 }
 
-trap close_tunnel_at_exit EXIT
+#trap close_tunnel_at_exit EXIT
 
 
 function wait_for_tunnel() {
