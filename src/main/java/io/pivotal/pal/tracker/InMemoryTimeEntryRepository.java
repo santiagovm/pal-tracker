@@ -6,6 +6,7 @@ import java.util.List;
 
 public class InMemoryTimeEntryRepository implements ITimeEntryRepository {
 
+    @Override
     public TimeEntry create(TimeEntry timeEntry) {
         Long id = _nextId;
         _nextId += 1;
@@ -23,14 +24,17 @@ public class InMemoryTimeEntryRepository implements ITimeEntryRepository {
         return newTimeEntry;
     }
 
+    @Override
     public TimeEntry find(long timeEntryId) {
         return _timeEntries.get(timeEntryId);
     }
 
+    @Override
     public List<TimeEntry> list() {
         return new ArrayList<>(_timeEntries.values());
     }
 
+    @Override
     public TimeEntry update(long timeEntryId, TimeEntry timeEntry) {
         if (find(timeEntryId) == null) return null;
 
@@ -47,6 +51,7 @@ public class InMemoryTimeEntryRepository implements ITimeEntryRepository {
         return newEntry;
     }
 
+    @Override
     public void delete(long timeEntryId) {
         _timeEntries.remove(timeEntryId);
     }
