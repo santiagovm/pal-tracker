@@ -40,7 +40,7 @@ public class TimeEntryControllerTest {
                 .create(any(TimeEntry.class));
 
 
-        ResponseEntity response = controller.create(timeEntryToCreate);
+        ResponseEntity<TimeEntry> response = controller.create(timeEntryToCreate);
 
 
         verify(timeEntryRepository).create(timeEntryToCreate);
@@ -101,7 +101,7 @@ public class TimeEntryControllerTest {
                 .when(timeEntryRepository)
                 .update(eq(timeEntryId), any(TimeEntry.class));
 
-        ResponseEntity response = controller.update(timeEntryId, expected);
+        ResponseEntity<TimeEntry> response = controller.update(timeEntryId, expected);
 
         verify(timeEntryRepository).update(timeEntryId, expected);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -121,14 +121,14 @@ public class TimeEntryControllerTest {
         LocalDate date = null;
         int hours = -1;
 
-        ResponseEntity response = controller.update(nonExistentTimeEntryId, new TimeEntry(id, projectId, userId, date, hours));
+        ResponseEntity<TimeEntry> response = controller.update(nonExistentTimeEntryId, new TimeEntry(id, projectId, userId, date, hours));
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     public void testDelete() {
         long timeEntryId = 1L;
-        ResponseEntity response = controller.delete(timeEntryId);
+        ResponseEntity<TimeEntry> response = controller.delete(timeEntryId);
         verify(timeEntryRepository).delete(timeEntryId);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }

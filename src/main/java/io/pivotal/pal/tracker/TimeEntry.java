@@ -45,6 +45,10 @@ public class TimeEntry {
         _hours = hours;
     }
 
+    public TimeEntry() {
+        // parameter-less constructor for rest controller
+    }
+
     public TimeEntry(long projectId, long userId, LocalDate date, int hours) {
         _id = -1;
         _projectId = projectId;
