@@ -10,7 +10,7 @@ import java.util.List;
 @RequestMapping("/time-entries")
 public class TimeEntryController {
 
-    public TimeEntryController(TimeEntryRepository timeEntryRepo) {
+    public TimeEntryController(ITimeEntryRepository timeEntryRepo) {
         _timeEntryRepo = timeEntryRepo;
     }
 
@@ -60,5 +60,5 @@ public class TimeEntryController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    private TimeEntryRepository _timeEntryRepo;
+    private ITimeEntryRepository _timeEntryRepo;
 }

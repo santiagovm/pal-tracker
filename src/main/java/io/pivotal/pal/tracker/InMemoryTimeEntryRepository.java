@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class InMemoryTimeEntryRepository implements TimeEntryRepository  {
+public class InMemoryTimeEntryRepository implements ITimeEntryRepository {
 
     public TimeEntry create(TimeEntry timeEntry) {
         Long id = _nextId;
