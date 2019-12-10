@@ -1,5 +1,8 @@
 package io.pivotal.pal.tracker;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,14 +13,20 @@ import java.util.List;
 @RequestMapping("/time-entries")
 public class TimeEntryController {
 
-    public TimeEntryController(ITimeEntryRepository timeEntryRepo) {
+    public TimeEntryController(ITimeEntryRepository timeEntryRepo, MeterRegistry meterRegistry) {
         _timeEntryRepo = timeEntryRepo;
+
+        _timeEntrySummary = meterRegistry.summary("timeEntry.summary");
+        _actionCounter = meterRegistry.counter("timeEntry.actionCounter");
     }
 
     @PostMapping
     public ResponseEntity<TimeEntry> create(@RequestBody TimeEntry timeEntryToCreate) {
 
         TimeEntry timeEntryCreated = _timeEntryRepo.create(timeEntryToCreate);
+
+        _actionCounter.increment();
+        _timeEntrySummary.record(_timeEntryRepo.list().size());
 
         return new ResponseEntity<>(timeEntryCreated, HttpStatus.CREATED);
     }
@@ -31,11 +40,15 @@ public class TimeEntryController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        _actionCounter.increment();
+
         return new ResponseEntity<>(timeEntry, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<TimeEntry>> list() {
+
+        _actionCounter.increment();
         List<TimeEntry> timeEntries = _timeEntryRepo.list();
         return new ResponseEntity<>(timeEntries, HttpStatus.OK);
     }
@@ -49,6 +62,8 @@ public class TimeEntryController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        _actionCounter.increment();
+
         return new ResponseEntity<>(updatedTimeEntry, HttpStatus.OK);
     }
 
@@ -57,8 +72,13 @@ public class TimeEntryController {
 
         _timeEntryRepo.delete(id);
 
+        _actionCounter.increment();
+        _timeEntrySummary.record(_timeEntryRepo.list().size());
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     private ITimeEntryRepository _timeEntryRepo;
+    private final DistributionSummary _timeEntrySummary;
+    private final Counter _actionCounter;
 }
